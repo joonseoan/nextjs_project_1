@@ -1,0 +1,13 @@
+Next.js with type script
+
+- npx create-next-app@latest --ts
+- Keep pressing Enter with the default value. Eslint should be enclosed.
+- setup yarn: https://classic.yarnpkg.com/en/docs/install#debian-stable
+- yarn dev: start ’next dev’
+
+Folder structure
+
+- .next: output folder compiled. It compiles the development files whenever refreshes `yarn start` or `save`
+- node_modules: nothing to say
+- pages: writing our applications
+- _app.tsx:  
