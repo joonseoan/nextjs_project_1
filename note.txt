@@ -10,4 +10,27 @@ Folder structure
 - .next: output folder compiled. It compiles the development files whenever refreshes `yarn start` or `save`
 - node_modules: nothing to say
 - pages: writing our applications
-- _app.tsx:  
+- _app.tsx:
+
+Server side rendering vs Client side rendering
+- To research, please us the `View Source` with right click on the browser
+
+- Server side rendering: renders from a server.
+  - It display all of contents in the browser upon request.
+  - It enables SEO (search engine optimization) : we can think about how visible is our page on the internet 
+    . More content we have on our page at the time, we are making the request, the better our page can
+      better form. The content is immediately available in the browser as we make request. 
+  - We can still use React.js
+
+- Client side rendering: renders from a browser.
+  - All of HTM contents is not in the browser.
+   . It only has Empty content in <Head></Head> and <div id="root"></div>
+   . So how it is possible that clients say it has its own application displaying all of the content?
+      -> It is because the HTML file has the javascript files. Javascript in `Browser` is responsible for rending
+        all of HTM documents.
+      -> Specifically, in React, as soon as HTML file passed down, and then additional resources (Javascript) are fetched.
+        In other words, tHe main HTML file renders normally with chunk.js and main.js. The javascript
+        files downloaded together with that HTML file and linked to that HTML file executes, and the current
+        HTML contents are displayed on the browser.
+      -> It is very fast to get the initial page loaded because we getting there HTML content is empty
+        and we are getting immediately something on the screen and Javascript is responsible to our rendering.

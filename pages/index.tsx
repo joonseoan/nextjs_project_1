@@ -65,3 +65,8 @@ export default function Home() {
     </>
   );
 }
+
+// ------------------------- server side rendering vs client side rendering -------------------------
+// It is pure javascript. Nothing is related to React. --->  next week
+
+
