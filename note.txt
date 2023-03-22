@@ -23,7 +23,7 @@ Server side rendering vs Client side rendering
   - We can still use React.js
 
 - Client side rendering: renders from a browser.
-  - All of HTM contents is not in the browser.
+  - All of HTML contents is not in the browser (in browser, right click and then view page source).
    . It only has Empty content in <Head></Head> and <div id="root"></div>
    . So how it is possible that clients say it has its own application displaying all of the content?
       -> It is because the HTML file has the javascript files. Javascript in `Browser` is responsible for rending
