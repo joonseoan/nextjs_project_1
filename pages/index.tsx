@@ -1,4 +1,4 @@
-import { Component, createElement } from "react";
+import { Component, createElement, ReactNode, FC } from "react";
 
 /**
  * [IMPORTANT]
@@ -24,7 +24,17 @@ function Compo_2(this: any) {
 };
 
 
-function Compo_1() {
+function Compo_1({ 
+  compoProps1: MyComponent1, // MUST UPPER LETTER
+  compoProps2,
+  compoProps3,
+  compoProps4: MyComponent4,
+}: { 
+  compoProps1: React.FC<any>,
+  compoProps2: ReactNode, // also we can use JSX.Element.
+  compoProps3: React.FC<any>,
+  compoProps4: React.FC<any>,
+}) {
   // return(
   //   <div>
   //     <h1>Hi, there!</h1>
@@ -39,11 +49,19 @@ function Compo_1() {
     createElement("p", null, "Hi, component!"),
     // [IMPORTANT]
     // should not use quotation mark for the custom component.
-    createElement(Compo_2, null)
+    createElement(Compo_2, null),
+    <>
+      <MyComponent1 testProps="componentProp1" />
+      {/* Can't grant a prop!!!  */}
+      {compoProps2}
+      {/* Can't grant a prop!!!  */}
+      {compoProps3({ testProps: "componentProp2" })}
+      <MyComponent4 />
+    </>
   );
 };
 
-class CompoExample extends Component {
+class ClassExample extends Component {
   render()  {
     console.log('this in class component: ', this) // CompoExample
     // create XML
@@ -54,14 +72,32 @@ class CompoExample extends Component {
   }
 }
 
+function CompoProps(props) {
+  return (
+    <div>
+      <h1>CompoProps</h1>;
+      <h2>{props.testProps}</h2>
+    </div>
+
+  )
+};
+
+
+// [IMPORTANT!!!!] the way to send component as an props.
 export default function Home() {
   // - JSX: javascript XML (Javascript returns abstracted XML
   //    actually in React. It is not possible to return HTML in Javascript)
   return (
     <>
       <h1>Hello</h1>
-      <Compo_1 />
-      <CompoExample />
+      <Compo_1 
+        compoProps1={CompoProps} // [IMPORTANT] I think it is the best way because it can add props anywhere!!!!
+        // must grant a prop here!!!
+        compoProps2={<CompoProps />}
+        compoProps3={CompoProps}
+        compoProps4={() => <CompoProps testProps="componentProps4" />} // Same thing as compoProps2
+      />
+      <ClassExample />
     </>
   );
 }
