@@ -34,3 +34,7 @@ Server side rendering vs Client side rendering
         HTML contents are displayed on the browser.
       -> It is very fast to get the initial page loaded because we getting there HTML content is empty
         and we are getting immediately something on the screen and Javascript is responsible to our rendering.
+
+- Bulma (CSS Framework)
+  - yarn add bulma
+

@@ -23,7 +23,6 @@ body {
 }
 
 body {
-  padding: 100px;
   color: rgb(var(--foreground-rgb));
 }
 

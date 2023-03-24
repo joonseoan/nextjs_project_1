@@ -1,4 +1,6 @@
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+// Installation bulma. It works for all pages.
+import 'bulma/css/bulma.min.css';
 // It works for all the pages.
 import '../styles/globals.css';
 
