@@ -15,10 +15,9 @@ export default function BulmaPractice() {
   return (
     <>
       <Layout>
-        <ResourceHighlight />
+        <ResourceHighlight resources={resources.slice(0, 2)} />
         <NewsLetter />
-        <ResourceList />
-        {JSON.stringify(resources)}
+        <ResourceList resources={resources.slice(2)}/>
       </Layout>
     </>
   );
