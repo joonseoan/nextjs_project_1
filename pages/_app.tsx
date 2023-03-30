@@ -17,6 +17,9 @@ function App({ Component, pageProps }: AppProps) {
    *     works well. Also, even if we remove app.tsx or _app.tsx, it work well. (However, we still need
    *     `app.tsx` or `_app.tsx`, to modify the `Component` and `pageProps`)
    */
+  
+  // [IMPORTANT] This area executes in build time!!! (npm run build)
+  // Also every single page functions also executes in build time.
   console.log('Component: ', Component)
   return <Component {...pageProps} />
 }
