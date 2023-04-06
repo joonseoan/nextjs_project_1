@@ -27,7 +27,7 @@ interface WithAIPStaticProps {
 // [IMPORTANT] It works in server and client both!!!
 function WithAPI({ resources }: WithAIPStaticProps) {
   // [IMPORTANT]: executes in build time!!
-  console.log("~~~~ server -----> client~~~~");
+  console.log("resources: ", resources);
   return (
     <>
       <Layout>
@@ -112,29 +112,49 @@ function WithAPI({ resources }: WithAIPStaticProps) {
  *   
  *
  *  *** It also works at `npm run dev / start`.
- *
- *
  */
 
 export async function getServerSideProps(): Promise<{
   props: WithAIPStaticProps;
 }> {
-  console.log("works only in server as well");
-  // It can not be found in `bash terminal` in a while of npm run build.
-  // because this functions does not run in a while of build.
-  console.log("calling getServerSideRendering");
 
-  // [IMPORTANT]
-  // It does not have the fetch error in build time
-  // because this function does execute in build function.
+  /**
+   * This getServerSideProps and getStaticProps are not bound
+   * to localhost:3000. Only the client side are using localhost:3000 server.
+   * Therefore, it does not generate `CORS` error. However, in the client side,
+   * definitely generate the CORS error.
+   */
+
   return {
     props: {
       resources: await (
-        await fetch("http://localhost:3000/api/resources")
+        await fetch("http://localhost:3001/api/resources")
       ).json(),
     },
   };
 }
+
+// 1) By using the next.js's internal api --> It has limitation.
+// Please visit resources ts.
+// export async function getServerSideProps(): Promise<{
+//   props: WithAIPStaticProps;
+// }> {
+//   console.log("works only in server as well");
+//   // It can not be found in `bash terminal` in a while of npm run build.
+//   // because this functions does not run in a while of build.
+//   console.log("calling getServerSideRendering");
+
+//   // [IMPORTANT]
+//   // It does not have the fetch error in build time
+//   // because this function does execute in build function.
+//   return {
+//     props: {
+//       resources: await (
+//         await fetch("http://localhost:3000/api/resources")
+//       ).json(),
+//     },
+//   };
+// }
 
 // [IMPORTANT] It works in the server only!
 // So that we can make a call the server side handler functions.
