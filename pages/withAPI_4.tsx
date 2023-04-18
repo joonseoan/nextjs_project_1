@@ -2,6 +2,7 @@
  * Working with API, resource.ts.
  */
 
+import { useEffect } from "react";
 import Layout from "@/components/Layout";
 
 import ResourceHighlight from "@/components/ResourceHighlight";
@@ -26,8 +27,22 @@ interface WithAIPStaticProps {
 
 // [IMPORTANT] It works in server and client both!!!
 function WithAPI({ resources }: WithAIPStaticProps) {
-  // [IMPORTANT]: executes in build time!!
+  // [IMPORTANT] This area works in both, clients and server sides.
   console.log("resources: ", resources);
+  
+  // Just for demo to call api in the client side
+  useEffect(() => {
+    // 2)
+    // [IMPORTANT] The external api server should have cors
+    // because this area is bound to localhost:3000 and
+    // the api server is bound to localhost:3001.
+    // fetch('http://localhost:3001/api/resources')
+
+    // 1)
+    // [IMPORTANT] It works well because it calls next.js internal api.
+    // fetch('http://localhost:3000/api/resources')
+  }, []);
+
   return (
     <>
       <Layout>
@@ -119,8 +134,8 @@ export async function getServerSideProps(): Promise<{
 }> {
 
   /**
-   * This getServerSideProps and getStaticProps are not bound
-   * to localhost:3000. Only the client side are using localhost:3000 server.
+   * Both, `getServerSideProps` and `getStaticProps` are not bound
+   * to localhost:3000. Only the client (React) side is using localhost:3000 server.
    * Therefore, it does not generate `CORS` error. However, in the client side,
    * definitely generate the CORS error.
    */

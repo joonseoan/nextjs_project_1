@@ -13,6 +13,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import data from './data.json';
 
 // Use typescript
-export default function resources(req: NextApiRequest, res: NextApiResponse) {
-  res.send(data);
+export default async function resources(req: NextApiRequest, res: NextApiResponse) {
+  // 2) from the server outside
+  res.send(await (await fetch('http:localhost:3001/api/resources')).json())
+
+  // 1) from json file
+  // res.send(data);
 };
