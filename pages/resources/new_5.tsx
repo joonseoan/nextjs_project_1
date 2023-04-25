@@ -32,13 +32,25 @@ function ResourceCreate() {
     alert(JSON.stringify(form))
   }
 
-  function handleTitleChange(event: FormEvent<HTMLInputElement>) {
+  function handleChange(
+    event:FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) {
+    const { name, value } = event.currentTarget;
+    
+
     setForm({
       ...form,
-      title: event.currentTarget.value,
+      [name]: name === 'timeToFinish' ? +value : value,
     });
   }
 
+  function resetForm () {
+    setForm(DEFAULT_DATA);
+  }
+
+  /**
+   * Tomorrow review all the code
+   */
 
   return (
     <Layout>
@@ -53,7 +65,8 @@ function ResourceCreate() {
                   <div className="control">
                     <input
                       value={form.title}
-                      onChange={handleTitleChange}
+                      name="title"
+                      onChange={handleChange}
                       className="input"
                       type="text"
                       placeholder="Learn Next JS and Sanity IO"
@@ -65,6 +78,8 @@ function ResourceCreate() {
                   <div className="control">
                     <textarea
                       value={form.description}
+                      name="description"
+                      onChange={handleChange}
                       className="textarea"
                       placeholder="Learn these technologies because they are very popular and better SEO"></textarea>
                   </div>
@@ -74,6 +89,8 @@ function ResourceCreate() {
                   <div className="control">
                     <input
                       value={form.link}
+                      onChange={handleChange}
+                      name="link"
                       className="input"
                       type="text"
                       placeholder="https://academy.eincode.com"
@@ -84,7 +101,7 @@ function ResourceCreate() {
                   <label className="label">Priority</label>
                   <div className="control">
                     <div className="select">
-                      <select value={form.priority}>
+                      <select value={form.priority} name="priority" onChange={handleChange}>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -97,6 +114,8 @@ function ResourceCreate() {
                   <div className="control">
                     <input
                       value={form.timeToFinish}
+                      name="timeToFinish"
+                      onChange={handleChange}
                       className="input"
                       type="number"
                       placeholder="60"
@@ -120,7 +139,7 @@ function ResourceCreate() {
                     </button>
                   </div>
                   <div className="control">
-                    <button className="button is-link is-light">Cancel</button>
+                    <button className="button is-link is-light" onClick={resetForm}>Reset Form</button>
                   </div>
                 </div>
               </form>
