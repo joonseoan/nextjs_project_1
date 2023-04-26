@@ -48,10 +48,6 @@ function ResourceCreate() {
     setForm(DEFAULT_DATA);
   }
 
-  /**
-   * Tomorrow review all the code
-   */
-
   return (
     <Layout>
       <div className="container">

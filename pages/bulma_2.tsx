@@ -1,7 +1,7 @@
 /**
- * Using bulma template. We can find bulma template in google with `bulma template` keyword.
+ * Using bulma template.
+ * We can find bulma template in google with `bulma template` keyword.
  */
-
 import Layout from "@/components/Layout";
 
 // use absolute path with "jsconfing.json".
