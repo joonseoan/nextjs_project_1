@@ -28,8 +28,13 @@ const DEFAULT_DATA = {
 function ResourceCreate() {
   const [form, setForm] = useState<DefaultData>(DEFAULT_DATA);
 
-  function submitForm() {
-    alert(JSON.stringify(form))
+  async function submitForm() {
+    // we do not need to add localhost because it is the same host domain.
+    await fetch('/api/resources', {
+      method: 'POST',
+      body: JSON.stringify(form),
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   function handleChange(

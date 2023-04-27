@@ -1,5 +1,3 @@
-// Tomorrow, review this component and then go to next!
-
 import { Component, createElement, ReactNode } from "react";
 
 /**
