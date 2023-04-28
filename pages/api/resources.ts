@@ -16,7 +16,12 @@ import data from './data.json';
 export default async function resources(req: NextApiRequest, res: NextApiResponse) {
   // 3) POST
   if (req.method?.toUpperCase() === 'POST') {
-    console.log('---------------------------->', req.body)
+    const { title, description, link, timeToFinish, priority } = req.body || {};
+
+    if (!title || !description || !link || !timeToFinish || !priority) {
+      return res.status(422).send('Data are missing.')
+    }
+
     return res.send('Data has been received');
   }
 

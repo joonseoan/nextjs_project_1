@@ -29,12 +29,23 @@ function ResourceCreate() {
   const [form, setForm] = useState<DefaultData>(DEFAULT_DATA);
 
   async function submitForm() {
+    try {
+      const res = await fetch('/api/resources', {
+        method: 'POST',
+        body: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (res.status === 422) {
+        throw new Error(await res.text());
+      }
+
+      console.log(await res.text())
+    } catch(err) {
+      console.log((err as Error).message);
+    }
+
     // we do not need to add localhost because it is the same host domain.
-    await fetch('/api/resources', {
-      method: 'POST',
-      body: JSON.stringify(form),
-      headers: { 'Content-Type': 'application/json' },
-    });
   }
 
   function handleChange(
