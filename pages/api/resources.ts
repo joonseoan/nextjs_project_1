@@ -22,7 +22,12 @@ export default async function resources(req: NextApiRequest, res: NextApiRespons
       return res.status(422).send('Data are missing.')
     }
 
-    return res.send('Data has been received');
+    const response = await fetch('http://localhost:3001/api/resources', { 
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+    // return res.send('Data has been received');
   }
 
   // 2) GET
