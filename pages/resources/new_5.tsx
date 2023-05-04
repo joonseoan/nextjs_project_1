@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 
 /**
  * Regarding for link, please refer to NavBar in components.
@@ -27,6 +28,7 @@ const DEFAULT_DATA = {
 
 function ResourceCreate() {
   const [form, setForm] = useState<DefaultData>(DEFAULT_DATA);
+  const router = useRouter();
 
   async function submitForm() {
     try {
@@ -36,13 +38,14 @@ function ResourceCreate() {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      if (res.status === 422) {
-        throw new Error(await res.text());
+      if (!res.ok) {
+        throw new Error('Something strange thing happened.');
       }
 
-      console.log(await res.text())
+      router.push('/withAPI_4');
+      
     } catch(err) {
-      console.log((err as Error).message);
+      throw new Error((err as Error).message);
     }
 
     // we do not need to add localhost because it is the same host domain.

@@ -22,12 +22,25 @@ export default async function resources(req: NextApiRequest, res: NextApiRespons
       return res.status(422).send('Data are missing.')
     }
 
-    const response = await fetch('http://localhost:3001/api/resources', { 
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body),
-    });
-    // return res.send('Data has been received');
+    try {
+      const response = await fetch("http://localhost:3001/api/resources", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req.body),
+      });
+
+      if (response.status !== 200) {
+        throw new Error(`Unexpected error occurred with ${response.status}`);
+      }
+      
+      const success = await response.text();
+
+      return res.send(success);
+    } catch(err) {
+      throw new Error((err as Error).message);
+    }    
   }
 
   // 2) GET
