@@ -7,6 +7,7 @@ export interface Resource {
   priority: number;
   timeToFinish: number;
   active: boolean;
+  createdAt?: string;
 };
 
 export const resources = [

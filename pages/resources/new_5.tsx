@@ -25,7 +25,6 @@ const DEFAULT_DATA = {
   timeToFinish: 60,
 };
 
-
 function ResourceCreate() {
   const [form, setForm] = useState<DefaultData>(DEFAULT_DATA);
   const router = useRouter();
@@ -156,7 +155,7 @@ function ResourceCreate() {
                   <div className="control">
                     <button className="button is-link is-light" onClick={resetForm}>Reset Form</button>
                   </div>
-                </div>
+                </div>https://www.udemy.com/join/login-popup/?locale=en_US&response_type=html&next=https%3A%2F%2Fwww.udemy.com%2F
               </form>
             </div>
           </div>
