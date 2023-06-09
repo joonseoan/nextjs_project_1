@@ -1,11 +1,11 @@
 import Layout from "@/components/Layout";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-
 import { Resource } from "../withAPI_4";
 
 function ResourceDetail(
-  { title, createdAt, description }: InferGetServerSidePropsType<typeof getServerSideProps>
+  { resource: { title, description, createdAt } }: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
+  // console.log('resourceId: ', resourceId)
   return (
     <Layout>
       <section className="hero ">
@@ -29,45 +29,39 @@ function ResourceDetail(
   );
 }
 
-// continue work on it tomorrow
-// https://nextjs.org/docs/pages/api-reference/functions/get-server-side-props
-// export const getServerSideProps: GetServerSideProps<{ resourceId: string }> = async (context) => {
-//   const { params } = context; 
+export const getServerSideProps: GetServerSideProps<{ resource: Resource }> = async ({ params, query }) => {
+  // [IMPORTANT]
+  // param is more useful
+  /**
+   * url: http://localhost:3000/resources/adfasdfdfadfaf?joon=23
+   * => { joon: '2', id: 'adfasdfdfadfaf' }
+   */
+  // const id = query.id as string;
+  // console.log("query: ", query);
+
+  // [IMPORTANT]
+  // [Params works like  this]
+  // `param` works only with a single attribute
+
+  const id = (params!.id) as string;
   
-//   return {
-//     props: { 
-//       resourceId: params!.id
-//     }
-//   }
-// }
+  try {
+    const resource = await (await fetch(`http://localhost:3001/api/resources/${id}`)).json();
 
-// export async function getServerSideProps(): GetServerSideProps<{}> {
-//   return {
-//     props: {
+    if (!resource) {
+      throw new Error('Unable to get the requested resource.');
+    }
 
-//     }
-//   }
-// }
-
-// export async function getServerSideProps(context): Promise<{
-//   props: WithAIPStaticProps;
-// }> {
-//   /**
-//    * [IMPORTANT!!!]
-//    * Both, `getServerSideProps` and `getStaticProps` are not bound
-//    * to localhost:3000. Only the client (React) side is using localhost:3000 server.
-//    * Therefore, it does not generate `CORS` error. However, in the client side,
-//    * definitely generate the CORS error.
-//    */
-
-//   // Direct call for the server outside
-//   return {
-//     props: {
-//       resources: await (
-//         await fetch("http://localhost:3001/api/resources")
-//       ).json(),
-//     },
-//   };
-// }
+    return {
+      props: {
+        resource,
+      },
+    };
+  } catch(err) {
+    return {
+      notFound: true,
+    }
+  }  
+}
 
 export default ResourceDetail;
