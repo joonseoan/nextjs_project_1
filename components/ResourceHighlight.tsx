@@ -1,4 +1,5 @@
 import { Resource } from "@/api/data";
+import Link from 'next/link';
 
 function ResourceHighlight({ resources }: { resources: Resource[] }) {
   return (
@@ -16,6 +17,9 @@ function ResourceHighlight({ resources }: { resources: Resource[] }) {
                       <p>
                         {description}
                       </p>
+                      <Link href={`/resources/${id}`} className="button is-link">
+                        Details
+                      </Link>
                     </div>
                   </div>
                 </div>
