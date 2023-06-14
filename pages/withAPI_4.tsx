@@ -56,6 +56,8 @@ function WithAPI({ resources }: WithAIPStaticProps) {
   );
 }
 
+// Reference: https://medium.com/eincode/next-js-data-fetching-getstaticprops-vs-getserversideprops-fcbf43d0ccac
+
 /**
  * `npm run build ` with `getStaticProps` creates 5 folders
  * 1. pages - client pages (with chunks) and the server api handlers
