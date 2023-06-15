@@ -1,3 +1,8 @@
+/**
+ * After Resource detail, need to understand
+ * SSG vs SSR further from the previous lecture notes
+ */
+
 import Layout from "@/components/Layout";
 import { 
   // 2) ServerSideProps
@@ -15,6 +20,7 @@ import {
 import { ParsedUrlQuery } from 'querystring';
 
 import { Resource } from "../withAPI_4";
+import { useRouter } from "next/router";
 
 // for 2) and 1-5)
 interface IParams extends ParsedUrlQuery {
@@ -64,9 +70,18 @@ interface IParams extends ParsedUrlQuery {
 
 // 1-5) with getStaticProps
 function ResourceDetail(
-  { resource: { title, description, createdAt } }: InferGetStaticPropsType<typeof getStaticProps>
+  { resource }: InferGetStaticPropsType<typeof getStaticProps>
 ) {
-  // console.log('resourceId: ', resourceId)
+  const router = useRouter();
+
+  // [IMPORTANT!!!!!!!!!]
+  // getStaticPaths's property in return values.
+  if (router.isFallback) {
+    // So "fallback: true", it shows as loading the data
+    // Then after, it disappears to display the error message.
+    return <div>Loading data...</div>;
+  }
+
   return (
     <Layout>
       <section className="hero ">
@@ -76,9 +91,9 @@ function ResourceDetail(
               <div className="columns">
                 <div className="column is-8 is-offset-2">
                   <div className="content is-medium">
-                    <h2 className="subtitle is-4">{createdAt || 'December 24, 2023'}</h2>
-                    <h1 className="title">{ title }</h1>
-                    <p>{description}</p>
+                    <h2 className="subtitle is-4">{resource.createdAt || 'December 24, 2023'}</h2>
+                    <h1 className="title">{ resource.title }</h1>
+                    <p>{resource.description}</p>
                   </div>
                 </div>
               </div>
@@ -175,8 +190,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return { 
     paths,
-    // means that other routes (no `id` routes) should resolve into 404 page
-    fallback: false 
+    // [!!!!!!!!!! IMPORTANT !!!!!!!!!!]
+    // 'false: [Production]' means that other routes (which is not created in build) 
+    //  should resolve into 404 page. After that, it will keep trying to fetch data in `getStaticProps`.
+    //  Even `the runtime`, it only takes care of the paths created in build so that even if the new paths with [id]
+    //  are created in the BE, it goes directly goes to 404 page.
+
+    // 'true': if the additional paths that are not available in both client server and BE,
+    //  are run, it will generate an error.
+    //  However, even without compiling (npm run build), if the BE has the new path [id],
+    //  Then it will wait until the next.js creates the pre-html page for the new path
+    //  in the client server (with route.isFallback), and then it will renders in the browser.
+    //  It will not directly go to 404 page.
+    fallback: true,
   };
 }
 
