@@ -49,6 +49,7 @@ function Compo_1({
       <MyComponent1 testProps="componentProp1" />
       {/* Can't grant a prop!!!  */}
       {compoProps2}
+      {/* if we do not like to make it capitalize */}
       {compoProps3({ testProps: "componentProp2" })}
       <MyComponent4 />
     </>
@@ -78,7 +79,7 @@ function CompoProps(props) {
 // [IMPORTANT!!!!] the way to send component as an props.
 export default function BasicReact() {
   // - JSX: javascript XML (Javascript returns abstracted XML
-  //    actually in React. It is not possible to return HTML in Javascript)
+  //   actually in React. It is not possible to return HTML in Javascript)
   return (
     <>
       <h1>Hello</h1>

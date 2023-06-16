@@ -40,7 +40,7 @@ function WithAPI({ resources }: WithAIPStaticProps) {
     // the api server is bound to localhost:3001.
     // fetch('http://localhost:3001/api/resources')
 
-    // 1) Indirectly call the server outside use next.js api
+    // 1) Indirectly call the server outside by using next.js api
     // [IMPORTANT] It works well because it calls next.js internal api.
     // fetch('http://localhost:3000/api/resources')
   }, []);
@@ -61,10 +61,21 @@ function WithAPI({ resources }: WithAIPStaticProps) {
 /**
  * `npm run build ` with `getStaticProps` creates 5 folders
  * 1. pages - client pages (with chunks) and the server api handlers
- * 2. server - server side renders at runtime (at this time, we use `getServerSideProps`)
- * 3. static - build files containing `WithAPI_4` page.
- * 4. SSG (server side generation) - generates static HTML + Json (uses `getStaticProps`)
- * 5. ISR???
+ * 2. λ SSR (server side rendering) - server side renders at runtime
+ *    . it can be an api page(node server) and also react client 
+ *      (basically it renders from node server) 
+ *    . uses getServerSideProps (or getInitialProps) in React client
+ *    . it renders by javascript and json only
+ *    . In the server, no html is available which means html is created by javascript 
+ * 3. ○ static - any React client without any initial props
+ *    . In the server, html are ready
+ *    . It does not use getStaticProps (or getInitialProps) and getStaticProps
+ * 4. ● SSG (static site generation) - generates static HTML + Json (uses `getStaticProps`)
+ *    . Uses getStaticProps
+ *    . In Dynamic page, it uses getStaticPaths
+ *    . In the server, html and json are ready
+ * 5. ISR
+ *    . Revalidated page in getStaticProps
  * 
  * The 'WithAPI_4' is located in the client(○)
  * 
@@ -76,7 +87,7 @@ function WithAPI({ resources }: WithAIPStaticProps) {
  * getStaticProps VS getServerSideProps
  * 
  * [General concept] `getStaticProps` works as static html file in Browser. 
- * It works in the browser with the defined javascript. 
+ * It works in the browser with the limited javascript. 
  * So the server returns `html` and `javascript` files to work together.
  * (Please go to .next/server/pages. In this case, `WithAPI_4.html` and `WithAPI_4.js`) 
  * 
@@ -100,8 +111,6 @@ function WithAPI({ resources }: WithAIPStaticProps) {
  * 4. On the other hand, `getStaticProps` is called only in the `build` time
  *  Hence, it is called only *** once only in build time. Therefore,
  *  if it fetches data from API server, it generates an error.
- *  FYI, `getStaticProps run at `npm run dev / start` in development mode as well, however,
- *  when we fetch dynamic data, it will generate the error.
  *
  * 5. Specifying `getStaticProps` generates `WithAPI_4.html` in a build directory.
  *  In the `.next` folder, `WithAPI_4.html` file is requested in the server and then created in the browser.
@@ -110,7 +119,7 @@ function WithAPI({ resources }: WithAIPStaticProps) {
  *  straight ways to get responds.
  *
  * 7. Specifying `getServerSideProps` would generate `WithAPI_4.js`, not WithAPI_4.html.
- *    because html is created by `WithAPI_4`
+ *    because html is created by `WithAPI_4.js`
  * 
  * // [IMPORTANT]
  * 8. Both can call fetch data in development environment
@@ -168,6 +177,10 @@ export async function getServerSideProps(): Promise<{
 //   };
 // }
 
+
+// [IMPORTANT] It can't make a call to the internal api during the build
+// because the internal api server is not running.
+//  However, it can call the external api.
 // [IMPORTANT] It works in the server only!
 // So that we can make a call the server side handler functions.
 // export async function getStaticProps(): Promise<{ props: WithAIPStaticProps }> {

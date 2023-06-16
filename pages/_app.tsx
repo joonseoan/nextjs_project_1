@@ -20,7 +20,7 @@ function App({ Component, pageProps }: AppProps) {
   
   // [IMPORTANT] This area executes in build time!!! (npm run build)
   // Also every single page functions also executes in build time.
-  console.log('Component: ', Component)
+  // console.log('Component: ', Component)
   return <Component {...pageProps} />
 }
 

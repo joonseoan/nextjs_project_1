@@ -78,7 +78,7 @@ function ResourceDetail(
   // getStaticPaths's property in return values.
   if (router.isFallback) {
     // So "fallback: true", it shows as loading the data
-    // Then after, it disappears to display the error message.
+    // Then after, it disappears to display the error message / 404 page.
     return <div>Loading data...</div>;
   }
 
@@ -218,6 +218,14 @@ export const getStaticProps: GetStaticProps<{ resource: Resource }> = async ({ p
       props: {
         resource,
       },
+      // [IMPORTANT!!!!]
+      // it is a time, 1 second
+      // Without `revalidate`, the client can't receive the updated data in the BE
+      // even after refreshing the browser because this page is build in `npm run build`.
+      // (during the run time after build)
+      // With 'revalidate', we can update this static page by refreshing browser. 
+      // `1` it time that means that at least a second, we should get the new data.
+      revalidate: 1,
     };
   } catch(err) {
     return {
@@ -241,10 +249,8 @@ export const getStaticProps: GetStaticProps<{ resource: Resource }> = async ({ p
  */
 // ResourceDetail.getInitialProps = async ({ query }: Context) => {
 //   // [IMPORTANT]`params` is not available in `getInitialProps`.  
-//   // const id = (params!.id) as string;
     
 //     const id = query.id;
-//     console.log('ddddddddd')
 
 //     try {
 //       const resource = await (await fetch(`http://localhost:3001/api/resources/${id}`)).json();
