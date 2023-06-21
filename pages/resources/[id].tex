@@ -1,6 +1,6 @@
 /**
- * After Resource detail, need to understand
- * SSG vs SSR further from the previous lecture notes
+ * Really important!!!
+ * Need to change tsx and look into this file!!
  */
 
 import Layout from "@/components/Layout";
@@ -21,6 +21,9 @@ import { ParsedUrlQuery } from 'querystring';
 
 import { Resource } from "../withAPI_4";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
+// import { Link } from 'next/'
 
 // for 2) and 1-5)
 interface IParams extends ParsedUrlQuery {
@@ -44,7 +47,6 @@ interface IParams extends ParsedUrlQuery {
 // function ResourceDetail(
 //   { resource: { title, description, createdAt } }: InferGetServerSidePropsType<typeof getServerSideProps>
 // ) {
-//   // console.log('resourceId: ', resourceId)
 //   return (
 //     <Layout>
 //       <section className="hero ">
@@ -54,9 +56,19 @@ interface IParams extends ParsedUrlQuery {
 //               <div className="columns">
 //                 <div className="column is-8 is-offset-2">
 //                   <div className="content is-medium">
-//                     <h2 className="subtitle is-4">{createdAt || 'December 24, 2023'}</h2>
-//                     <h1 className="title">{ title }</h1>
+//                     <h2 className="subtitle is-4">
+//                       {createdAt || "December 24, 2023"}
+//                     </h2>
+//                     <h1 className="title">{title}</h1>
 //                     <p>{description}</p>
+//                     {/* 
+//                       [IMPORTANT!!!]
+//                       As long as we use button here for edit page
+//                       we need to use `getServerSideProps`
+//                     */}
+//                     <Link href={`/withAPI_4`} className="button is-warning">
+//                       Update
+//                     </Link>
 //                   </div>
 //                 </div>
 //               </div>
@@ -76,11 +88,11 @@ function ResourceDetail(
 
   // [IMPORTANT!!!!!!!!!]
   // getStaticPaths's property in return values.
-  if (router.isFallback) {
-    // So "fallback: true", it shows as loading the data
-    // Then after, it disappears to display the error message / 404 page.
-    return <div>Loading data...</div>;
-  }
+  // if (router.isFallback) {
+  //   // So "fallback: true", it shows as loading the data
+  //   // Then after, it disappears to display the error message / 404 page.
+  //   return <div>Loading data...</div>;
+  // }
 
   return (
     <Layout>
