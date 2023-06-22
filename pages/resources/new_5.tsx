@@ -1,6 +1,11 @@
-import Layout from "@/components/Layout";
-import { FormEvent, useState } from "react";
+
+
+import { FormEvent, useState, MouseEventHandler, MouseEvent } from "react";
 import { useRouter } from "next/router";
+
+import Layout from "@/components/Layout";
+import ResourceForm from "@/components/ResourceForm";
+import { FormData } from "@/components/ResourceForm";
 
 /**
  * Regarding for link, please refer to NavBar in components.
@@ -9,69 +14,70 @@ import { useRouter } from "next/router";
  * in a different way.
  */
 
-export interface DefaultData {
-  title: string;
-  description: string;
-  link: string;
-  priority: string;
-  timeToFinish: number;
-}
+// export interface DefaultData {
+//   title: string;
+//   description: string;
+//   link: string;
+//   priority: string;
+//   timeToFinish: number;
+// }
 
-const DEFAULT_DATA = {
-  title: '',
-  description: '',
-  link: '',
-  priority: '2',
-  timeToFinish: 60,
-};
+// const DEFAULT_DATA = {
+//   title: '',
+//   description: '',
+//   link: '',
+//   priority: '2',
+//   timeToFinish: 60,
+// };
 
-function ResourceCreate() {
-  const [form, setForm] = useState<DefaultData>(DEFAULT_DATA);
+function ResourceCreate(this: any) {
+  // const [form, setForm] = useState<DefaultData>(DEFAULT_DATA);
   const router = useRouter();
 
-  async function submitForm() {
+  async function createForm(formData: FormData) {
+    console.log("formData: ", formData);
     try {
-      const res = await fetch('/api/resources', {
-        method: 'POST',
-        body: JSON.stringify(form),
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/resources", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
       });
 
       if (!res.ok) {
-        throw new Error('Something strange thing happened.');
+        throw new Error("Something strange thing happened.");
       }
 
-      router.push('/withAPI_4');
-      
-    } catch(err) {
+      router.push("/withAPI_4");
+    } catch (err) {
       throw new Error((err as Error).message);
     }
 
     // we do not need to add localhost because it is the same host domain.
   }
 
-  function handleChange(
-    event:FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) {
-    const { name, value } = event.currentTarget;
+  // function handleChange(
+  //   event:FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  // ) {
+  //   const { name, value } = event.currentTarget;
     
 
-    setForm({
-      ...form,
-      [name]: name === 'timeToFinish' ? +value : value,
-    });
-  }
+  //   setForm({
+  //     ...form,
+  //     [name]: name === 'timeToFinish' ? +value : value,
+  //   });
+  // }
 
-  function resetForm () {
-    setForm(DEFAULT_DATA);
-  }
+  // function resetForm () {
+  //   setForm(DEFAULT_DATA);
+  // }
 
   return (
     <Layout>
       <div className="container">
         <div className="columns">
           <div className="column is-8 is-offset-2">
-            <div className="resource-form">
+            <ResourceForm onFormSubmit={createForm.bind(this)} />
+            {/* <div className="resource-form">
               <h1 className="title">Add a new resource</h1>
               <form>
                 <div className="field">
@@ -138,14 +144,14 @@ function ResourceCreate() {
                   <p className="help">Time is in minutes</p>
                 </div>
                 <div className="field is-grouped">
-                  <div className="control">
+                  <div className="control"> */}
                     {/* 
                       For the form we do not use onSubmit in form tag in this scenario 
                       that type is "button", not "submit"
 
                       Then the browser refresh will not happen.
                     */}
-                    <button
+                    {/* <button
                       type="button"
                       onClick={submitForm}
                       className="button is-link">
@@ -157,7 +163,7 @@ function ResourceCreate() {
                   </div>
                 </div>https://www.udemy.com/join/login-popup/?locale=en_US&response_type=html&next=https%3A%2F%2Fwww.udemy.com%2F
               </form>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
