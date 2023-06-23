@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Resource } from "@/api/data";
+
+import { Resource } from '@/pages/withAPI_4';
 
 function ResourceList({ resources }: { resources: Resource[] }) {
   return (

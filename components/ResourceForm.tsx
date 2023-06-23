@@ -1,27 +1,22 @@
-import { useState, FormEvent, MouseEventHandler, MouseEvent } from "react";
-
-export interface FormData {
-  title: string;
-  description: string;
-  link: string;
-  priority: string;
-  timeToFinish: number;
-}
+import { Resource } from "@/pages/withAPI_4";
+import { useState, FormEvent, MouseEvent } from "react";
 
 const DEFAULT_DATA = {
   title: "",
   description: "",
   link: "",
-  priority: "2",
+  priority: 2,
   timeToFinish: 60,
 };
 
 export interface ResourceFormProps {
-  onFormSubmit (formData: FormData): Promise<void>;
+  onFormSubmit (formData: Resource): Promise<void>;
+  editData?: Resource;
 };
 
-function ResourceForm({ onFormSubmit }: ResourceFormProps) {
-  const [form, setForm] = useState<FormData>(DEFAULT_DATA);
+function ResourceForm({ onFormSubmit, editData }: ResourceFormProps) {
+  const [form, setForm] = useState<Resource>(editData || DEFAULT_DATA);
+  console.log('compo')
 
   function handleChange(
     event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -34,13 +29,14 @@ function ResourceForm({ onFormSubmit }: ResourceFormProps) {
     });
   }
 
-  function resetForm() {
+  function resetForm(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
     setForm(DEFAULT_DATA);
   }
 
   return (
     <div className="resource-form">
-      <h1 className="title">Add a new resource</h1>
+      <h1 className="title">{editData ? 'Edit' : 'Add a new '}  resource</h1>
       <form>
         <div className="field">
           <label className="label">Title</label>
@@ -129,7 +125,6 @@ function ResourceForm({ onFormSubmit }: ResourceFormProps) {
             </button>
           </div>
         </div>
-        https://www.udemy.com/join/login-popup/?locale=en_US&response_type=html&next=https%3A%2F%2Fwww.udemy.com%2F
       </form>
     </div>
   );

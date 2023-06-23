@@ -1,4 +1,4 @@
-import { Resource } from "@/api/data";
+import { Resource } from '@/pages/withAPI_4';
 import Link from 'next/link';
 
 function ResourceHighlight({ resources }: { resources: Resource[] }) {
