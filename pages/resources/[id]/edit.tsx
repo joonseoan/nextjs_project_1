@@ -4,6 +4,7 @@ import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { Resource } from "@/pages/withAPI_4";
 import ResourceForm from "@/components/ResourceForm";
 import Layout from "@/components/Layout";
+import { useRouter } from "next/router";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
@@ -13,8 +14,30 @@ function ResourceEdit(this: any,
   { resource }: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
 
-  async function updateResource (formData: Resource) {
-    alert(JSON.stringify(formData));
+  // console.log('resource: ', resource)
+
+  // const router = useRouter();
+
+  async function updateResource (formData: Resource) {   
+    try {
+      const res = await fetch('/api/resources/', {
+        method: "PATCH",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!res.ok) {
+        throw new Error("Something strange thing happened during the update.");
+      }
+
+      alert('Data has been updated.')
+
+      // router.push('');
+
+      // router.push("/withAPI_4");
+    } catch (err) {
+      throw new Error((err as Error).message);
+    }
   }
 
   return (

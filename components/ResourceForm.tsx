@@ -16,7 +16,6 @@ export interface ResourceFormProps {
 
 function ResourceForm({ onFormSubmit, editData }: ResourceFormProps) {
   const [form, setForm] = useState<Resource>(editData || DEFAULT_DATA);
-  console.log('compo')
 
   function handleChange(
     event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -107,11 +106,11 @@ function ResourceForm({ onFormSubmit, editData }: ResourceFormProps) {
         <div className="field is-grouped">
           <div className="control">
             {/* 
-                      For the form we do not use onSubmit in form tag in this scenario 
-                      that type is "button", not "submit"
+              For the form we do not use onSubmit in form tag in this scenario 
+              that type is "button", not "submit"
 
-                      Then the browser refresh will not happen.
-                    */}
+              Then the browser refresh will not happen.
+            */}
             <button
               type="button"
               onClick={() => onFormSubmit(form)}

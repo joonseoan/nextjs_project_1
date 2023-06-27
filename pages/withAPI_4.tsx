@@ -28,7 +28,7 @@ export interface WithAIPStaticProps {
 // [IMPORTANT] It works in server and client both!!!
 function WithAPI({ resources }: WithAIPStaticProps) {
   // [IMPORTANT] This area works in both, clients and server sides.
-  console.log("resources: ", resources);
+  // console.log("resources: ", resources);
   
   useEffect(() => {
     // [IMPORTANT!!!]

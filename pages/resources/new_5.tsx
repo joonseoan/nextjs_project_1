@@ -15,7 +15,6 @@ function ResourceCreate(this: any) {
   const router = useRouter();
 
   async function createForm(formData: Resource) {
-    console.log("formData: ", formData);
     try {
       const res = await fetch("/api/resources", {
         method: "POST",

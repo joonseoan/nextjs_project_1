@@ -14,17 +14,26 @@ import data from './data.json';
 
 // Use typescript
 export default async function resources(req: NextApiRequest, res: NextApiResponse) {
-  // 3) POST
-  if (req.method?.toUpperCase() === 'POST') {
-    const { title, description, link, timeToFinish, priority } = req.body || {};
+  // 3) POST or PATCH
+  const reqMethod = req.method?.toUpperCase();
+
+  if (reqMethod === 'POST' || reqMethod === 'PATCH') {
+    const { id = undefined, title, description, link, timeToFinish, priority } = req.body || {};
 
     if (!title || !description || !link || !timeToFinish || !priority) {
       return res.status(422).send('Data are missing.')
     }
 
+    let url = 'http://localhost:3001/api/resources';
+
+    // because id can be 0
+    if (reqMethod === 'PATCH' && id !== undefined) {
+      url = url + `/${id}`; 
+    }
+
     try {
-      const response = await fetch("http://localhost:3001/api/resources", {
-        method: "POST",
+      const response = await fetch(url, {
+        method: reqMethod,
         headers: {
           "Content-Type": "application/json",
         },
@@ -35,18 +44,20 @@ export default async function resources(req: NextApiRequest, res: NextApiRespons
         throw new Error(`Unexpected error occurred with ${response.status}`);
       }
       
+      
       const success = await response.text();
 
       return res.send(success);
     } catch(err) {
       throw new Error((err as Error).message);
-    }    
+    }
+  } else if (reqMethod === 'GET') {
+    // 2) GET
+    // from the server outside
+    res.send(await (await fetch('http:localhost:3001/api/resources')).json())
+    
+    // 1) from json file
+    // res.send(data);
   }
 
-  // 2) GET
-  // from the server outside
-  res.send(await (await fetch('http:localhost:3001/api/resources')).json())
-
-  // 1) from json file
-  // res.send(data);
 };
