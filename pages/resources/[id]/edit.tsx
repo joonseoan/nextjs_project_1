@@ -14,9 +14,7 @@ function ResourceEdit(this: any,
   { resource }: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
 
-  // console.log('resource: ', resource)
-
-  // const router = useRouter();
+  const router = useRouter();
 
   async function updateResource (formData: Resource) {   
     try {
@@ -30,11 +28,11 @@ function ResourceEdit(this: any,
         throw new Error("Something strange thing happened during the update.");
       }
 
-      alert('Data has been updated.')
+      const responseText = await res.text();
 
-      // router.push('');
+      alert(responseText);
 
-      // router.push("/withAPI_4");
+      router.push("/withAPI_4");
     } catch (err) {
       throw new Error((err as Error).message);
     }

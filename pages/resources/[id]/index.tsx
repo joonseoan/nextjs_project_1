@@ -16,9 +16,32 @@ interface IParams extends ParsedUrlQuery {
   id: string;
 }
 
-function ResourceDetail({
-  resource: { title, description, createdAt, id },
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { title, description, createdAt, id, timeToFinish } = resource;
+
+  async function activateResource() {
+    try {
+      const res = await fetch("/api/resources/", {
+        method: "PATCH",
+        body: JSON.stringify({
+          ...resource,
+          status: 'active',
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!res.ok) {
+        throw new Error("Something strange thing happened during the activation.");
+      }
+
+      alert(await res.text());
+
+      // router.push("/withAPI_4");
+    } catch (err) {
+      throw new Error((err as Error).message);
+    }
+  };
+
   return (
     <Layout>
       <section className="hero ">
@@ -33,14 +56,22 @@ function ResourceDetail({
                     </h2>
                     <h1 className="title">{title}</h1>
                     <p>{description}</p>
+                    <p>Time to finish: {timeToFinish} min</p>
                     {/* 
                       [IMPORTANT!!!]
                       As long as we use button here for edit page
                       we need to use `getServerSideProps`
                     */}
-                    <Link href={`/resources/${id}/edit`} className="button is-warning">
+                    <Link
+                      href={`/resources/${id}/edit`}
+                      className="button is-warning">
                       Update
                     </Link>
+                    <button
+                      className="button is-success ml-1"
+                      onClick={activateResource}>
+                      Activate
+                    </button>
                   </div>
                 </div>
               </div>
