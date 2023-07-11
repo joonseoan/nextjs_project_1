@@ -59,5 +59,4 @@ export default async function resources(req: NextApiRequest, res: NextApiRespons
     // 1) from json file
     // res.send(data);
   }
-
 };
