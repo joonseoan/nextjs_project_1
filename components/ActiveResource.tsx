@@ -2,9 +2,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { Resource } from '@/pages/withAPI_4';
+export interface ActivationTime {
+  activationTime: Date,
+};
+
+export type ActiveResource = Resource & ActivationTime;
 
 function ActiveResource() {
-  const [resource, setResource] = useState<Resource | {}>({});
+  const [activeResource, setActiveResource] = useState<Resource | {}>({});
 
   // [TODO - IMPORTANT!!!]
   // It is important understand when we need to fetch data in the client side
@@ -15,22 +20,29 @@ function ActiveResource() {
       try {
         const response = await fetch('/api/active-resource');
 
-        if (resource) {
-
+        if (!response.ok) {
+          throw new Error('Could not find an active resource.')
         }
 
+        const activeResource: ActiveResource = await response.json();
+        const resource = activeResource.timeToFinish;
+        // Change this one!!!!
+        const elapsedTIme = new Date().getSeconds() - new Date(activeResource.activationTime).getSeconds();
+        alert(elapsedTIme);
+        setActiveResource(activeResource);
       } catch(err) {
-
+        throw new Error((err as Error).message);
       }
     };
 
     fetchResource();
-
   }, []);
+
+  const hasActiveResource = !!Object.keys(activeResource).length;
 
   return (
     <div className="active-resource">
-      <h1 className="resource-name">My Active Resource</h1>
+      <h1 className="resource-name">{hasActiveResource ? (activeResource as Resource).title : ''}</h1>
       <div className="time-wrapper">
         <h2 className="elapsed-time">
           1400
