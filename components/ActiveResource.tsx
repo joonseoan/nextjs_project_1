@@ -8,9 +8,13 @@ export interface ActivationTime {
 
 export type ActiveResource = Resource & ActivationTime;
 
-function ActiveResource() {
-  const [activeResource, setActiveResource] = useState<Resource | {}>({});
+let time;
 
+function ActiveResource() {
+  const [activeResource, setActiveResource] = useState<ActiveResource | {}>({});
+  const [updatedTime, setUpdatedTime] = useState<string>('');
+
+  // Tomorrow!!!!!!!!!!!!!!!!!!!!!
   // [TODO - IMPORTANT!!!]
   // It is important understand when we need to fetch data in the client side
   // and when we need to fetch data in the server side by using serverSideProps
@@ -25,27 +29,54 @@ function ActiveResource() {
         }
 
         const activeResource: ActiveResource = await response.json();
-        const resource = activeResource.timeToFinish;
-        // Change this one!!!!
-        const elapsedTIme = new Date().getSeconds() - new Date(activeResource.activationTime).getSeconds();
-        alert(elapsedTIme);
-        setActiveResource(activeResource);
+
+        if (Object.keys(activeResource).length) {
+          const elapsedTIme = Math.round(new Date().getTime() / 1000 - new Date(activeResource.activationTime).getTime() / 1000);
+          const updatedTimeToFinish = activeResource.timeToFinish * 60 - elapsedTIme;  
+          
+          if (updatedTimeToFinish >= 0) {
+            setUpdatedTime((prev) => (updatedTimeToFinish.toString()));
+          } else {
+            setUpdatedTime('Already Finished.');
+          }
+
+          setActiveResource(activeResource);
+        }
+
       } catch(err) {
         throw new Error((err as Error).message);
       }
     };
 
     fetchResource();
+
+    time = setInterval(() => { 
+      setUpdatedTime((prev) => {
+        const _prev = parseInt(prev);
+        if (_prev >= 1) {
+          return (_prev - 1).toString()
+        } else {
+          clearInterval(time);
+          return 'Already Finished.';
+        }
+      });
+    }, 1000);
+
+    return () => {
+      if (time) {
+        clearInterval(time);
+      }
+    }
   }, []);
 
-  const hasActiveResource = !!Object.keys(activeResource).length;
+  const {title = 'No activated resource' } = activeResource as ActiveResource;
 
   return (
     <div className="active-resource">
-      <h1 className="resource-name">{hasActiveResource ? (activeResource as Resource).title : ''}</h1>
+      <h1 className="resource-name">{title}</h1>
       <div className="time-wrapper">
         <h2 className="elapsed-time">
-          1400
+          { updatedTime }
         </h2>
       </div>
       <Link className="button" href="/withAPI_4">Go to resource</Link>      
