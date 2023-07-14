@@ -44,7 +44,6 @@ export default async function resources(req: NextApiRequest, res: NextApiRespons
         throw new Error(`Unexpected error occurred with ${response.status}`);
       }
       
-      
       const success = await response.text();
 
       return res.send(success);

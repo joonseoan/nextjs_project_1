@@ -34,8 +34,9 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
         throw new Error("Something strange thing happened during the activation.");
       }
 
-      alert(await res.text());
+      location.reload();
 
+      // alert(await res.text());
       // router.push("/withAPI_4");
     } catch (err) {
       throw new Error((err as Error).message);
