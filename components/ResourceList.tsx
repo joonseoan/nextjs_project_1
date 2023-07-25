@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Resource } from '@/pages/withAPI_4';
+import ResourceLabel from './ResourceLabel';
 
 function ResourceList({ resources }: { resources: Resource[] }) {
   return (
@@ -10,11 +11,12 @@ function ResourceList({ resources }: { resources: Resource[] }) {
           <div className="container">
             <section className="section">
               <div className="columns is-multiline is-variable is-8">
-                {resources.map(({ id, title, description }) => (
-                  <div className="column is-5 is-offset-1 " key={id}>
+                {resources.map(({ id, title, description, status, createdAt }) => (
+                  <div className="column is-5 is-offset-1" key={id}>
                     <div className="content is-medium">
                       <h2 className="subtitle is-5 has-text-grey">
-                        December 23, 2022
+                        { createdAt || 'December 23, 2023' }
+                        <ResourceLabel status={status} />
                       </h2>
                       <h1 className="title has-text-black is-3">{title}</h1>
                       <p className="has-text-dark">{description}</p>

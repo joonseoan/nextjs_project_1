@@ -7,16 +7,16 @@ import Layout from "@/components/Layout";
 import ResourceHighlight from "@/components/ResourceHighlight";
 import NewsLetter from "@/components/NewLetter";
 import ResourceList from "@/components/ResourceList";
-import { resources } from "@/api/data";
 
 export interface Resource {
   id?: string;
   title: string;
   description: string;
   link: string;
-  image?: string;
   priority: number;
   timeToFinish: number;
+  status?: string;
+  image?: string;
   active?: boolean;
   createdAt?: string;
 }

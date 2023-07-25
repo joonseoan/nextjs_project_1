@@ -11,13 +11,14 @@ import { ParsedUrlQuery } from "querystring";
 
 import { Resource } from "../../withAPI_4";
 import Link from "next/link";
+import ResourceLabel from "@/components/ResourceLabel";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
 }
 
 function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { title, description, createdAt, id, timeToFinish } = resource;
+  const { title, description, createdAt, id, timeToFinish, status } = resource;
 
   async function activateResource() {
     try {
@@ -54,6 +55,7 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                   <div className="content is-medium">
                     <h2 className="subtitle is-4">
                       {createdAt || "December 24, 2023"}
+                      <ResourceLabel status={status} />
                     </h2>
                     <h1 className="title">{title}</h1>
                     <p>{description}</p>
