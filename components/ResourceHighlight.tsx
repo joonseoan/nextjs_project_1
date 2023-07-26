@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { Resource } from '@/pages/withAPI_4';
 import ResourceLabel from './ResourceLabel';
+import { useRouter } from 'next/router';
 
-function ResourceHighlight({ resources }: { resources: Resource[] }) {
+function ResourceHighlight({ resources }: { resources: Resource[], hasActiveResource: boolean }) {
+  const router = useRouter();
+
   return (
     <>
       <section className="hero ">
@@ -14,16 +17,23 @@ function ResourceHighlight({ resources }: { resources: Resource[] }) {
                   <div className="column is-8 is-offset-2">
                     <div className="content is-medium">
                       <h2 className="subtitle is-4">
-                        {createdAt || "December 25, 2022"}
+                        {createdAt ? new Date(createdAt).toDateString() : "Tue July 25, 2023"}
                         <ResourceLabel status={status} />
                       </h2>
                       <h1 className="title">{title}</h1>
-                      <p>{description}</p>
-                      <Link
-                        href={`/resources/${id}`}
-                        className="button is-link">
+                      <p className="mb-2">{description}</p>
+                      <a
+                        onClick={(event) => {
+                          event.preventDefault(); 
+                          router.push({
+                            pathname: `/resources/${id}`,
+                            query: { hasActiveResource },
+                          }) 
+                        }}
+                        // href={`/resources/${id}`}
+                        className="button is-light">
                         Details
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 </div>

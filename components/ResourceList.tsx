@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Resource } from '@/pages/withAPI_4';
 import ResourceLabel from './ResourceLabel';
 
-function ResourceList({ resources }: { resources: Resource[] }) {
+function ResourceList({ resources }: { resources: Resource[], hasActiveResource: boolean }) {
   return (
     <>
       <section className="hero ">
@@ -15,14 +15,14 @@ function ResourceList({ resources }: { resources: Resource[] }) {
                   <div className="column is-5 is-offset-1" key={id}>
                     <div className="content is-medium">
                       <h2 className="subtitle is-5 has-text-grey">
-                        { createdAt || 'December 23, 2023' }
+                        { createdAt ? new Date(createdAt).toDateString() : 'Tue July 23, 2023' }
                         <ResourceLabel status={status} />
                       </h2>
                       <h1 className="title has-text-black is-3">{title}</h1>
-                      <p className="has-text-dark">{description}</p>
+                      <p className="has-text-dark mb-2">{description}</p>
                       <Link
                         href={`/resources/${id}`}
-                        className="button is-link">
+                        className="button is-light">
                         Details
                       </Link>
                     </div>

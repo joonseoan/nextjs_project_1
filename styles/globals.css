@@ -63,3 +63,11 @@ a {
   height: 100px;
 }
 
+.resource-inactive {
+  background-color: orange !important;
+}
+
+.resource-active {
+  background-color: #2d8bff !important;
+}
+

@@ -44,13 +44,16 @@ function WithAPI({ resources }: WithAIPStaticProps) {
     // [IMPORTANT] It works well because it calls next.js internal api.
     // fetch('http://localhost:3000/api/resources')
   }, []);
+  console.log('resources ====> ', resources)
+  // const _resources = resources.slice(0, 2);
+  const hasActiveResource = !!resources.find(({ status }) => status === 'active');
 
   return (
     <>
       <Layout>
-        <ResourceHighlight resources={resources.slice(0, 2)} />
+        <ResourceHighlight resources={resources.slice(0, 2)} hasActiveResource={hasActiveResource} />
         <NewsLetter />
-        <ResourceList resources={resources.slice(2)} />
+        <ResourceList resources={resources.slice(2)} hasActiveResource={hasActiveResource} />
       </Layout>
     </>
   );
@@ -149,7 +152,7 @@ export async function getServerSideProps(): Promise<{
   return {
     props: {
       resources: await (
-        await fetch("http://localhost:3001/api/resources")
+        await fetch(`${process.env.API_URL}/resources`)
       ).json(),
     },
   };

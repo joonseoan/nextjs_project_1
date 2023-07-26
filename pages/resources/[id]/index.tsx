@@ -54,7 +54,7 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                 <div className="column is-8 is-offset-2">
                   <div className="content is-medium">
                     <h2 className="subtitle is-4">
-                      {createdAt || "December 24, 2023"}
+                      {createdAt ? new Date(createdAt).toDateString() : "Wen Dec 24, 2023"}
                       <ResourceLabel status={status} />
                     </h2>
                     <h1 className="title">{title}</h1>
@@ -65,16 +65,24 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                       As long as we use button here for edit page
                       we need to use `getServerSideProps`
                     */}
-                    <Link
-                      href={`/resources/${id}/edit`}
-                      className="button is-warning">
-                      Update
-                    </Link>
-                    <button
-                      className="button is-success ml-1"
-                      onClick={activateResource}>
-                      Activate
-                    </button>
+                    {
+                      status === 'inactive' && (
+                        <>
+                          <Link
+                            href={`/resources/${id}/edit`}
+                            className="button is-warning">
+                            Update
+                          </Link>
+                          {
+                            <button
+                              className="button is-success ml-1"
+                              onClick={activateResource}>
+                              Activate
+                            </button>
+                          }
+                        </>
+                      )
+                    }
                   </div>
                 </div>
               </div>
@@ -104,8 +112,8 @@ export const getServerSideProps: GetServerSideProps<{
   const { id } = params as IParams;
 
   try {
-    const resource = await (
-      await fetch(`http://localhost:3001/api/resources/${id}`)
+    const resource = await(
+      await fetch(`${process.env.API_URL}/resources/${id}`)
     ).json();
 
     if (!resource) {

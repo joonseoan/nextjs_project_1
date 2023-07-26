@@ -24,7 +24,7 @@ export default async function resources(req: NextApiRequest, res: NextApiRespons
       return res.status(422).send('Data are missing.')
     }
 
-    let url = 'http://localhost:3001/api/resources';
+    let url = `${process.env.API_URL}/resources`;
 
     // because id can be 0
     if (reqMethod === 'PATCH' && id !== undefined) {

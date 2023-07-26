@@ -61,8 +61,8 @@ export const getServerSideProps: GetServerSideProps<{
   const { id } = params as IParams;
 
   try {
-    const resource = await (
-      await fetch(`http://localhost:3001/api/resources/${id}`)
+    const resource = await(
+      await fetch(`${process.env.API_URL}/resources/${id}`)
     ).json();
 
     if (!resource) {
