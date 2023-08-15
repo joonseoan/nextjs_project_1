@@ -12,13 +12,23 @@ import { ParsedUrlQuery } from "querystring";
 import { Resource } from "../../withAPI_4";
 import Link from "next/link";
 import ResourceLabel from "@/components/ResourceLabel";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
 }
 
 function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
   const { title, description, createdAt, id, timeToFinish, status } = resource;
+  // const { hasActiveResource = false } = router.query;
+
+  // useEffect(() => {
+    
+  // }, []);
+  console.log('status: ', status)
+  // console.log('hasActiveResource in detail page: ', hasActiveResource)
 
   async function activateResource() {
     try {
@@ -54,7 +64,9 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                 <div className="column is-8 is-offset-2">
                   <div className="content is-medium">
                     <h2 className="subtitle is-4">
-                      {createdAt ? new Date(createdAt).toDateString() : "Wen Dec 24, 2023"}
+                      {createdAt
+                        ? new Date(createdAt).toDateString()
+                        : "Wen Dec 24, 2023"}
                       <ResourceLabel status={status} />
                     </h2>
                     <h1 className="title">{title}</h1>
@@ -65,24 +77,24 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                       As long as we use button here for edit page
                       we need to use `getServerSideProps`
                     */}
-                    {
-                      status === 'inactive' && (
-                        <>
-                          <Link
-                            href={`/resources/${id}/edit`}
-                            className="button is-warning">
-                            Update
-                          </Link>
-                          {
-                            <button
-                              className="button is-success ml-1"
-                              onClick={activateResource}>
-                              Activate
-                            </button>
-                          }
-                        </>
-                      )
-                    }
+                    {status === "inactive" && (
+                      <>
+                        <Link
+                          href={`/resources/${id}/edit`}
+                          className="button is-warning">
+                          Update
+                        </Link>
+                      </>
+                    )}
+                    {/* {hasActiveResource && ( */}
+                      <>
+                        <button
+                          className="button is-success ml-1"
+                          onClick={activateResource}>
+                          Activate
+                        </button>
+                      </>
+                    {/* )} */}
                   </div>
                 </div>
               </div>
