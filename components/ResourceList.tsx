@@ -1,9 +1,8 @@
-// import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Resource } from '@/pages/withAPI_4';
 import ResourceLabel from './ResourceLabel';
 
-function ResourceList({ resources, hasActiveResource }: { resources: Resource[], hasActiveResource: boolean }) {
+function ResourceList({ resources, hasActiveResource }: { resources: Resource[], hasActiveResource: string }) {
   const router = useRouter();
 
   return (
@@ -25,10 +24,11 @@ function ResourceList({ resources, hasActiveResource }: { resources: Resource[],
                         </h2>
                         <h1 className="title has-text-black is-3">{title}</h1>
                         <p className="has-text-dark mb-2">{description}</p>
-                        <a className="button is-light" onClick={() => {
+                        <a className="button is-light" onClick={(event) => {
+                          event.preventDefault()
                           router.push({
                             pathname: `/resources/${id}`,
-                            query: { hasActiveResource }
+                            query: { hasActiveResource },
                           });
                         }}>Details</a>
                         {/* <Link

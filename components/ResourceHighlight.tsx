@@ -1,12 +1,9 @@
-// import Link from 'next/link';
 import { Resource } from '@/pages/withAPI_4';
 import ResourceLabel from './ResourceLabel';
 import { useRouter } from 'next/router';
 
-function ResourceHighlight({ resources, hasActiveResource }: { resources: Resource[], hasActiveResource: boolean }) {
+function ResourceHighlight({ resources, hasActiveResource }: { resources: Resource[], hasActiveResource: string }) {
   const router = useRouter();
-
-  console.log('hasActiveResource: ', hasActiveResource)
 
   return (
     <>
@@ -26,17 +23,16 @@ function ResourceHighlight({ resources, hasActiveResource }: { resources: Resour
                       <p className="mb-2">{description}</p>
                       <a
                         onClick={(event) => {
-                          // event.preventDefault();
+                          event.preventDefault();
                           router.push({
                             pathname: `/resources/${id}`,
                             // tomorrow
-                            // 1) need to resolve this issue to deliver the propvalue
                             // 2) need to resolve http issue when active is done~
                             query: { hasActiveResource },
-                          }) 
+                          })
                         }}
-                        // href={`/resources/${id}`}
-                        className="button is-light">
+                        className="button is-light"
+                      >
                         Details
                       </a>
                     </div>

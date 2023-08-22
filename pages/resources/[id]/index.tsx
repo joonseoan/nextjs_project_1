@@ -13,7 +13,6 @@ import { Resource } from "../../withAPI_4";
 import Link from "next/link";
 import ResourceLabel from "@/components/ResourceLabel";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
@@ -22,13 +21,10 @@ interface IParams extends ParsedUrlQuery {
 function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const { title, description, createdAt, id, timeToFinish, status } = resource;
-  // const { hasActiveResource = false } = router.query;
+  const { hasActiveResource = '' } = router.query;
 
-  // useEffect(() => {
-    
-  // }, []);
-  console.log('status: ', status)
-  // console.log('hasActiveResource in detail page: ', hasActiveResource)
+  console.log('status: ', typeof status)
+  console.log('hasActiveResource: ', typeof hasActiveResource)
 
   async function activateResource() {
     try {
@@ -45,6 +41,7 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
         throw new Error("Something strange thing happened during the activation.");
       }
 
+      // window.location.reload();
       location.reload();
 
       // alert(await res.text());
@@ -86,7 +83,7 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                         </Link>
                       </>
                     )}
-                    {/* {hasActiveResource && ( */}
+                    {hasActiveResource !== 'hasActiveResource' && (
                       <>
                         <button
                           className="button is-success ml-1"
@@ -94,7 +91,7 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                           Activate
                         </button>
                       </>
-                    {/* )} */}
+                    )}
                   </div>
                 </div>
               </div>

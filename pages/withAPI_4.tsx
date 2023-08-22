@@ -44,16 +44,18 @@ function WithAPI({ resources }: WithAIPStaticProps) {
     // [IMPORTANT] It works well because it calls next.js internal api.
     // fetch('http://localhost:3000/api/resources')
   }, []);
-  console.log('resources ====> ', resources)
+
   // const _resources = resources.slice(0, 2);
   const hasActiveResource = !!resources.find(({ status }) => status === 'active');
+  // Because router query does not support boolean type
+  const _hasActiveResource = hasActiveResource ? 'hasActiveResource' : 'noActiveResource';
 
   return (
     <>
       <Layout>
-        <ResourceHighlight resources={resources.slice(0, 2)} hasActiveResource={hasActiveResource} />
+        <ResourceHighlight resources={resources.slice(0, 2)} hasActiveResource={_hasActiveResource} />
         <NewsLetter />
-        <ResourceList resources={resources.slice(2)} hasActiveResource={hasActiveResource} />
+        <ResourceList resources={resources.slice(2)} hasActiveResource={_hasActiveResource} />
       </Layout>
     </>
   );
