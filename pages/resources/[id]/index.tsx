@@ -9,22 +9,24 @@ import {
 
 import { ParsedUrlQuery } from "querystring";
 
-import { Resource } from "../../withAPI_4";
+import { Resource, WithAPIProps } from "../../withAPI_4";
 import Link from "next/link";
 import ResourceLabel from "@/components/ResourceLabel";
-import { useRouter } from "next/router";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
 }
 
-function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const { title, description, createdAt, id, timeToFinish, status } = resource;
-  const { hasActiveResource = '' } = router.query;
+export type ResourceProp = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-  console.log('status: ', typeof status)
-  console.log('hasActiveResource: ', typeof hasActiveResource)
+// tomorrow
+// withAPI page count is not available
+// inactive / active is not toggling
+// update button issue in active resource
+
+
+function ResourceDetail({ resource, isResourceActive = undefined, setIsResourceActive = undefined }: WithAPIProps & ResourceProp) {
+  const { title, description, createdAt, id, timeToFinish, status } = resource;
 
   async function activateResource() {
     try {
@@ -41,18 +43,16 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
         throw new Error("Something strange thing happened during the activation.");
       }
 
-      // window.location.reload();
-      location.reload();
-
-      // alert(await res.text());
-      // router.push("/withAPI_4");
+      if (setIsResourceActive) {
+        setIsResourceActive(true);
+      }
     } catch (err) {
       throw new Error((err as Error).message);
     }
   };
 
   return (
-    <Layout>
+    <Layout setIsResourceActive={setIsResourceActive} isResourceActive={isResourceActive}>
       <section className="hero ">
         <div className="hero-body">
           <div className="container">
@@ -83,7 +83,7 @@ function ResourceDetail({ resource }: InferGetServerSidePropsType<typeof getServ
                         </Link>
                       </>
                     )}
-                    {hasActiveResource !== 'hasActiveResource' && (
+                    {!isResourceActive && (
                       <>
                         <button
                           className="button is-success ml-1"

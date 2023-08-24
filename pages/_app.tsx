@@ -3,9 +3,11 @@ import type { AppProps } from 'next/app';
 import 'bulma/css/bulma.min.css';
 // It works for all the pages.
 import '../styles/globals.css';
+import { useState } from 'react';
 
 // We can edit the function name to another, for instance `MainApp`.
 function App({ Component, pageProps }: AppProps) {
+  const [isResourceActive, setIsResourceActive] = useState<boolean>(false);
   /**
    * Component is a function of `Home`
    * 
@@ -21,7 +23,7 @@ function App({ Component, pageProps }: AppProps) {
   // [IMPORTANT] This area executes in build time!!! (npm run build)
   // Also every single page functions also executes in build time.
   // console.log('Component: ', Component)
-  return <Component {...pageProps} />
+  return <Component {...pageProps} isResourceActive={isResourceActive} setIsResourceActive={setIsResourceActive} />
 }
 
 export default App;

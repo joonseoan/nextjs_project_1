@@ -21,12 +21,17 @@ export interface Resource {
   createdAt?: string;
 }
 
-export interface WithAIPStaticProps {
+export type WithAIPStaticProps = {
   resources: Array<Resource>;
 }
 
+export interface WithAPIProps {
+  isResourceActive?: boolean;
+  setIsResourceActive?: (active: boolean) => void;
+}
+
 // [IMPORTANT] It works in server and client both!!!
-function WithAPI({ resources }: WithAIPStaticProps) {
+function WithAPI({ resources }: WithAIPStaticProps & WithAPIProps) {
   // [IMPORTANT] This area works in both, clients and server sides.
   // console.log("resources: ", resources);
   
@@ -46,16 +51,16 @@ function WithAPI({ resources }: WithAIPStaticProps) {
   }, []);
 
   // const _resources = resources.slice(0, 2);
-  const hasActiveResource = !!resources.find(({ status }) => status === 'active');
-  // Because router query does not support boolean type
-  const _hasActiveResource = hasActiveResource ? 'hasActiveResource' : 'noActiveResource';
+  // const hasActiveResource = !!resources.find(({ status }) => status === 'active');
+  // // Because router query does not support boolean type
+  // const _hasActiveResource = hasActiveResource ? 'hasActiveResource' : 'noActiveResource';
 
   return (
     <>
       <Layout>
-        <ResourceHighlight resources={resources.slice(0, 2)} hasActiveResource={_hasActiveResource} />
+        <ResourceHighlight resources={resources.slice(0, 2)} />
         <NewsLetter />
-        <ResourceList resources={resources.slice(2)} hasActiveResource={_hasActiveResource} />
+        <ResourceList resources={resources.slice(2)} />
       </Layout>
     </>
   );

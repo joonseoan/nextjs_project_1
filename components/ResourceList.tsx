@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { Resource } from '@/pages/withAPI_4';
 import ResourceLabel from './ResourceLabel';
 
-function ResourceList({ resources, hasActiveResource }: { resources: Resource[], hasActiveResource: string }) {
+function ResourceList({ resources }: { resources: Resource[] }) {
   const router = useRouter();
 
   return (
@@ -28,7 +28,6 @@ function ResourceList({ resources, hasActiveResource }: { resources: Resource[],
                           event.preventDefault()
                           router.push({
                             pathname: `/resources/${id}`,
-                            query: { hasActiveResource },
                           });
                         }}>Details</a>
                         {/* <Link

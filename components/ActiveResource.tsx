@@ -1,24 +1,23 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { Resource } from '@/pages/withAPI_4';
+import { Resource, WithAPIProps } from '@/pages/withAPI_4';
 export interface ActivationTime {
   activationTime?: Date,
 };
 
-export type ActiveResource = Resource & ActivationTime;
+export type ActivatedResource = Resource & ActivationTime;
 
 let time;
 
-function ActiveResource() {
-  const [activeResource, setActiveResource] = useState<ActiveResource | {}>({});
-  const _activeResource = activeResource as ActiveResource;
+function ActiveResource({ isResourceActive = undefined, setIsResourceActive = undefined }: WithAPIProps) {
+  const [activeResource, setActiveResource] = useState<ActivatedResource | {}>({});
+  const _activeResource = activeResource as ActivatedResource;
   const hasActiveResource = Object.keys(activeResource).length;
   const [updatedTime, setUpdatedTime] = useState<string>('');
 
-  useEffect(function () {
-    if (!hasActiveResource) {
-
+  useEffect(() => {
+    if (isResourceActive) {
       (async () => {
         try {
           const response = await fetch("/api/active-resource");
@@ -50,7 +49,7 @@ function ActiveResource() {
       })();
     } 
 
-    if (hasActiveResource) {
+    if (isResourceActive && hasActiveResource) {
       async function completeResource() {
         delete _activeResource.activationTime;
 
@@ -69,10 +68,13 @@ function ActiveResource() {
               "Something strange thing happened during completing resource."
             );
           }
+
+          // To get back to the previous buttons and state after the update.
+          // location.reload();
         } catch (err) {
           throw new Error((err as Error).message);
         }
-      }
+      };
 
       time = setInterval(() => {
         setUpdatedTime((prev) => {
@@ -82,19 +84,23 @@ function ActiveResource() {
             return (_prev - 1).toString();
           } else {
             completeResource();
+            if (setIsResourceActive) {
+              setIsResourceActive(false);
+            }
             clearInterval(time);
             return '';
           } 
         });
       }, 1000);
-    }
+    };
 
     return () => {
       if (time) {
         clearInterval(time);
       }
     };
-  }, [hasActiveResource]);
+  }, [isResourceActive, hasActiveResource]);
+
 
   return (
     <div className="active-resource">

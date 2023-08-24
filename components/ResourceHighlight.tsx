@@ -2,7 +2,7 @@ import { Resource } from '@/pages/withAPI_4';
 import ResourceLabel from './ResourceLabel';
 import { useRouter } from 'next/router';
 
-function ResourceHighlight({ resources, hasActiveResource }: { resources: Resource[], hasActiveResource: string }) {
+function ResourceHighlight({ resources }: { resources: Resource[] }) {
   const router = useRouter();
 
   return (
@@ -26,9 +26,6 @@ function ResourceHighlight({ resources, hasActiveResource }: { resources: Resour
                           event.preventDefault();
                           router.push({
                             pathname: `/resources/${id}`,
-                            // tomorrow
-                            // 2) need to resolve http issue when active is done~
-                            query: { hasActiveResource },
                           })
                         }}
                         className="button is-light"
