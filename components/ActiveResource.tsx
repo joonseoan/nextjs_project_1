@@ -69,6 +69,10 @@ function ActiveResource({ isResourceActive = undefined, setIsResourceActive = un
             );
           }
 
+          if (setIsResourceActive) {
+            setIsResourceActive(false)
+          }          
+
           // To get back to the previous buttons and state after the update.
           // location.reload();
         } catch (err) {
@@ -84,9 +88,6 @@ function ActiveResource({ isResourceActive = undefined, setIsResourceActive = un
             return (_prev - 1).toString();
           } else {
             completeResource();
-            if (setIsResourceActive) {
-              setIsResourceActive(false);
-            }
             clearInterval(time);
             return '';
           } 
@@ -100,8 +101,7 @@ function ActiveResource({ isResourceActive = undefined, setIsResourceActive = un
       }
     };
   }, [isResourceActive, hasActiveResource]);
-
-
+  
   return (
     <div className="active-resource">
       <h1 className="resource-name">{hasActiveResource ? _activeResource.title : 'No Resource Active'}</h1>

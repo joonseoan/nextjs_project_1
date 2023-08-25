@@ -63,9 +63,6 @@ function NavBar() {
                 Add
                 {/* 1) <h1 className="is-size-5 has-text-weight-semibold">Add</h1> */}
               </Link>
-              <a className="navbar-item is-size-5 has-text-weight-semibold">
-                Features
-              </a>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import { ParsedUrlQuery } from "querystring";
 import { Resource, WithAPIProps } from "../../withAPI_4";
 import Link from "next/link";
 import ResourceLabel from "@/components/ResourceLabel";
+import { useEffect, useState } from "react";
 
 interface IParams extends ParsedUrlQuery {
   id: string;
@@ -19,14 +20,18 @@ interface IParams extends ParsedUrlQuery {
 
 export type ResourceProp = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-// tomorrow
-// withAPI page count is not available
-// inactive / active is not toggling
-// update button issue in active resource
-
-
-function ResourceDetail({ resource, isResourceActive = undefined, setIsResourceActive = undefined }: WithAPIProps & ResourceProp) {
+function ResourceDetail({ resource: _resource, isResourceActive = undefined, setIsResourceActive = undefined }: WithAPIProps & ResourceProp) {
+  const [resource, setResource] = useState<Resource>(_resource);
   const { title, description, createdAt, id, timeToFinish, status } = resource;
+
+  useEffect(() => {
+    (async function() {
+      setResource(await(
+        await fetch(`http://localhost:3001/api/resources/${id}`)
+      ).json());
+    })()
+
+  }, [isResourceActive, id]);
 
   async function activateResource() {
     try {

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 
 import Layout from "@/components/Layout";
 import ResourceForm from "@/components/ResourceForm";
-import { Resource } from "../withAPI_4";
+import { Resource, WithAPIProps } from "../withAPI_4";
 
 /**
  * Regarding for link, please refer to NavBar in components.
@@ -10,8 +10,7 @@ import { Resource } from "../withAPI_4";
  * it refreshes the browser. We would need to implement the link
  * in a different way.
  */
-
-function ResourceCreate(this: any) {
+function ResourceCreate(this: any, { isResourceActive, setIsResourceActive }: WithAPIProps) {
   const router = useRouter();
 
   async function createForm(formData: Resource) {
@@ -35,7 +34,7 @@ function ResourceCreate(this: any) {
   }
 
   return (
-    <Layout>
+    <Layout isResourceActive={isResourceActive} setIsResourceActive={setIsResourceActive}>
       <div className="container">
         <div className="columns">
           <div className="column is-8 is-offset-2">

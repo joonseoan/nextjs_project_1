@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ActiveResource } from "@/components/ActiveResource";
+import { ActivatedResource } from "@/components/ActiveResource";
 
 export default async function activeResource(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -9,7 +9,7 @@ export default async function activeResource(req: NextApiRequest, res: NextApiRe
      throw new Error('Unable to fetch an active resource'); 
     }
 
-    const activeResource: ActiveResource = await response.json();
+    const activeResource: ActivatedResource = await response.json();
 
     res.send(activeResource);
   } catch(err) {

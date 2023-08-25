@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import 'bulma/css/bulma.min.css';
 // It works for all the pages.
 import '../styles/globals.css';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 // We can edit the function name to another, for instance `MainApp`.
 function App({ Component, pageProps }: AppProps) {
@@ -19,11 +19,15 @@ function App({ Component, pageProps }: AppProps) {
    *     works well. Also, even if we remove app.tsx or _app.tsx, it work well. (However, we still need
    *     `app.tsx` or `_app.tsx`, to modify the `Component` and `pageProps`)
    */
+
+  const _setIsResourceActive = useCallback((active: boolean) => {
+    setIsResourceActive(active);
+  }, []);
   
   // [IMPORTANT] This area executes in build time!!! (npm run build)
   // Also every single page functions also executes in build time.
   // console.log('Component: ', Component)
-  return <Component {...pageProps} isResourceActive={isResourceActive} setIsResourceActive={setIsResourceActive} />
+  return <Component {...pageProps} isResourceActive={isResourceActive} setIsResourceActive={_setIsResourceActive} />
 }
 
 export default App;

@@ -1,7 +1,7 @@
 /**
  * Working with API, resource.ts.
  */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Layout from "@/components/Layout";
 import ResourceHighlight from "@/components/ResourceHighlight";
@@ -31,11 +31,24 @@ export interface WithAPIProps {
 }
 
 // [IMPORTANT] It works in server and client both!!!
-function WithAPI({ resources }: WithAIPStaticProps & WithAPIProps) {
+function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive }: WithAIPStaticProps & WithAPIProps) {
   // [IMPORTANT] This area works in both, clients and server sides.
   // console.log("resources: ", resources);
   
+  const [resources, setResources] = useState<Resource[]>(_resources);
+
   useEffect(() => {
+    // It should be implemented
+    // even though we have `serverSideProps` implementing the same fetch
+    // because `resources` should be updated in terms of `isResourceActive`.
+    (async function() {
+      setResources(
+        (await (
+          await fetch(`http://localhost:3001/api/resources`)
+        ).json())
+      )
+    })()
+
     // [IMPORTANT!!!]
     // [Just for demo to call api in the client side]
     
@@ -48,7 +61,7 @@ function WithAPI({ resources }: WithAIPStaticProps & WithAPIProps) {
     // 1) Indirectly call the server outside by using next.js api
     // [IMPORTANT] It works well because it calls next.js internal api.
     // fetch('http://localhost:3000/api/resources')
-  }, []);
+  }, [isResourceActive]);
 
   // const _resources = resources.slice(0, 2);
   // const hasActiveResource = !!resources.find(({ status }) => status === 'active');
@@ -57,7 +70,10 @@ function WithAPI({ resources }: WithAIPStaticProps & WithAPIProps) {
 
   return (
     <>
-      <Layout>
+      <Layout
+        isResourceActive={isResourceActive}
+        setIsResourceActive={setIsResourceActive}
+      >
         <ResourceHighlight resources={resources.slice(0, 2)} />
         <NewsLetter />
         <ResourceList resources={resources.slice(2)} />
@@ -143,6 +159,8 @@ function WithAPI({ resources }: WithAIPStaticProps & WithAPIProps) {
  *   
  */
 
+// It was mainly used but it should be managed in the client side
+// because it should be called in terms of `isResourceActive` value.
 export async function getServerSideProps(): Promise<{
   props: WithAIPStaticProps;
 }> {
