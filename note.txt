@@ -38,3 +38,68 @@ Server side rendering vs Client side rendering
 - Bulma (CSS Framework)
   - yarn add bulma
 
+
+- Deployment
+  . NodeJS: will go to Heroku (Node.js cannot go to Varicel because it is serverless platform)
+    - Signup Heroku
+      . email: j*o*seo.*n18*@gmail.com
+      . password: sheridan
+    - Get github (already done)
+    - Set Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli for Mac
+      . Need to install homebrew first (done already)
+      . In Mac terminal, 'brew tap heroku/brew && brew install heroku'
+      . In terminal, 'heroku version' --> we can see the heroku version
+      . Download git cli (Done already)
+      . Create a git repo in git hub and git commit and push (Please make sure that git repo must be `master`, not `main`)
+      . In google search 'heroku node js deployment': https://devcenter.heroku.com/articles/deploying-nodejs
+      . In terminal, `node -v` and copy and paste it to package.json file
+
+            `
+            "main": "index.js",
+            "engines": {
+                "node": "18.x"
+            },
+            
+            `
+      . Add start script in package.json.
+            `
+            "scripts": {
+                "test": "echo \"Error: no test specified\" && exit 1",
+                "dev": "nodemon index.js",
+                "start": "node index.js"
+            },
+            `
+
+      . Git commit and git push again.
+      . Visit Heroku website. and at the upper right corner click "new" -> "create new app"
+      . For app name: Content-manager-server
+      . Choose a region: U states
+      . Setup payment method
+      . click create app
+      . click `deploy` tab, refer to this doc to deploy app.
+      . Under the project directory, `heroku login` and in populated browser enter login
+      . In terminal, git status to check everything is updated and committed.
+      . In terminal, 'heroku git:remote -a content-manager-api-server' 
+        The 'content-manager-api-server' is a name that I entered in heroku in creating a new app.
+      . Then double check the git to heroku connection with `git remote -v`
+        We can see...
+        heroku	https://git.heroku.com/content-manager-api-server.git (fetch)
+        heroku	https://git.heroku.com/content-manager-api-server.git (push)
+        origin	https://github.com/joonseoan/nextjs-server-project1.git (fetch)
+        origin	https://github.com/joonseoan/nextjs-server-project1.git (push)
+      . 'git push heroku master' in terminal
+      . Visit Heroku and project in website and click `open app` at the upper right corner.
+      . If we have any trouble need to click "more" button upper right corner and then see view log.
+      . Please make sure that the server port should:
+        const PORT = process.env.PORT || 3001 in index.js
+      . Fix the issue. Git push and `git push heroku master` again.
+      . Got this url: https://content-manager-api-server-0f11aabab673.herokuapp.com/
+
+    . Next.js to Varicel
+      - Commit and Create git hub repo (done)
+      - Create .env.production
+        API_URL=https://content-manager-api-server-0f11aabab673.herokuapp.com/api
+      - "npm run build" and 'npm start' to see everything is ok.
+      - Git commit and push again.  
+
+
