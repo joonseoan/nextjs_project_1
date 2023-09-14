@@ -100,6 +100,16 @@ Server side rendering vs Client side rendering
       - Create .env.production
         API_URL=https://content-manager-api-server-0f11aabab673.herokuapp.com/api
       - "npm run build" and 'npm start' to see everything is ok.
-      - Git commit and push again.  
+      - Git commit and push again.
+      - Visit Vercel website from google.
+      - Signup and Login with Github
+      - Find the button "Create Project". It is near my id.
+      - Click "Import Third-Party Git Repository"
+      - Change the Repo to Public!!!
+      - add repo url https://github.com/joonseoan/nextjs_project_1
+      - And then Choose the current uploading repo for "only select one"
+      - Create the auto pipe line repo as guided in the Vercel.
+        Then it will start deploy it
+      - Click the screen thumbnail link: we can access to https://nextjs-project-vercel.vercel.app/withAPI_4
 
 
