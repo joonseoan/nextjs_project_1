@@ -15,7 +15,6 @@ function About() {
         {JSON.stringify(resources)}
       </Layout>
     </>
-
   )
 }
 

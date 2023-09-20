@@ -63,10 +63,10 @@ function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive 
     // fetch('http://localhost:3000/api/resources')
   }, [isResourceActive]);
 
-  // const _resources = resources.slice(0, 2);
+  // const resources = resources.slice(0, 2);
   // const hasActiveResource = !!resources.find(({ status }) => status === 'active');
   // // Because router query does not support boolean type
-  // const _hasActiveResource = hasActiveResource ? 'hasActiveResource' : 'noActiveResource';
+  // const hasActiveResource = hasActiveResource ? 'hasActiveResource' : 'noActiveResource';
 
   return (
     <>
@@ -95,7 +95,7 @@ function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive 
  *    . In the server, no html is available which means html is created by javascript 
  * 3. ○ static - any React client without any initial props
  *    . In the server, html are ready
- *    . It does not use getStaticProps (or getInitialProps) and getStaticProps
+ *    . It does not use getServerSideProps (or getInitialProps) and getStaticProps
  * 4. ● SSG (static site generation) - generates static HTML + Json (uses `getStaticProps`)
  *    . Uses getStaticProps
  *    . In Dynamic page, it uses getStaticPaths
@@ -103,10 +103,10 @@ function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive 
  * 5. ISR
  *    . Revalidated page in getStaticProps
  * 
- * The 'WithAPI_4' is located in the client(○)
+ * The 'WithAPI_4' is located in the `static` client(○)
  * 
  * On the other hand, `npm run build` with `getServerSideProps` creates only the page folder.
- * and the current `WithAPI_4` page located in the server(λ), not client.
+ * and the current `WithAPI_4` page located in the `SSR`(λ), not client.
  */
 
 /**
@@ -123,7 +123,7 @@ function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive 
  * 
  * [IMPORTANT]
  * FYI, without both functions, `getStaticProps` and `getServerSideProps`,
- * the page is always static page by default.
+ * the page is always 'static' page by default.
  *
  * 1. Basically both have the same role to toss props value from the server API
  *  to the client page. Both functions returns `props` to be used in the client component.
@@ -136,7 +136,8 @@ function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive 
  *
  * 4. On the other hand, `getStaticProps` is called only in the `build` time
  *  Hence, it is called only *** once only in build time. Therefore,
- *  if it fetches data from API server, it generates an error.
+ *  if it fetches data from internal API server (in build time, the internal server does not work.), it generates an error.
+ *  However, it works for the outside server.
  *
  * 5. Specifying `getStaticProps` generates `WithAPI_4.html` in a build directory.
  *  In the `.next` folder, `WithAPI_4.html` file is requested in the server and then created in the browser.
@@ -149,14 +150,13 @@ function WithAPI({ resources: _resources, isResourceActive, setIsResourceActive 
  * 
  * // [IMPORTANT]
  * 8. Both can call fetch data in development environment
- *  However, `getStaticProps` function will have a build error when `npm run build`.
+ *  However, `getStaticProps` function will have a build error in `npm run build`.
  *  So it should only return props with the *** static data like JSON ***.
  *
  * 9. Both cannot be used at the same time.
  *
  * 10. With `getServerSideProps`, the data fetched from the api is always fresh (updated).
  *  On the other hand, the data from `getStaticProps` is a static data after build.
- *   
  */
 
 // It was mainly used but it should be managed in the client side
@@ -208,7 +208,7 @@ export async function getServerSideProps(): Promise<{
 
 // [IMPORTANT] It can't make a call to the internal api during the build
 // because the internal api server is not running.
-//  However, it can call the external api.
+// However, it can call the external api.
 // [IMPORTANT] It works in the server only!
 // So that we can make a call the server side handler functions.
 // export async function getStaticProps(): Promise<{ props: WithAIPStaticProps }> {

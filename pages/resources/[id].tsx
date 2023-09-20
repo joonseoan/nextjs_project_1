@@ -184,7 +184,7 @@ function ResourceDetail(
 // }
 
 // 1-5) getStaticProps
-// Once again, `getStaticProps` is called at the build time. At a build time since our page
+// Once again, `getStaticProps` is called at the build time. At a build time, since our page
 // is dynamic which means [id]tsx, 
 // we need to know all of the IDs for all of the resource pages before we need to create.
 // So we need to introduce `getStaticPaths`.

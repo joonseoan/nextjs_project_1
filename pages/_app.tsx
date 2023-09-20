@@ -19,7 +19,6 @@ function App({ Component, pageProps }: AppProps) {
    *     works well. Also, even if we remove app.tsx or _app.tsx, it work well. (However, we still need
    *     `app.tsx` or `_app.tsx`, to modify the `Component` and `pageProps`)
    */
-
   const _setIsResourceActive = useCallback((active: boolean) => {
     setIsResourceActive(active);
   }, []);

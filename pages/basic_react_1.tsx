@@ -99,14 +99,18 @@ export default function BasicReact() {
 // It is pure javascript. Nothing is related to React.
 
 // [Client side rendering]: So it works in the browser without server side rendering.
+// It works only with Javascript.
+
+// - For example,
 // Paste it into console in the browser. we will see Hello World in browser.
 // const node = document.createElement('h1');
 // const text = document.createTextNode('Hello World!');
 // node.appendChild(text);
-// // __next is an id for next.js (It is like an "root" id in pure React.)
+
+// // In Elements tab, "__next" is an id for next.js (It is like an "root" id in pure React.)
 // document.getElementById('__next')?.appendChild(node);
 
-// [Compiling into pure javascript]
+// - Compiling into pure javascript
 // So main.min.js file in the network tab of the browser shows the appendChild...
 // Then they are all that are compiled in pure javascript from React.js.
 
@@ -132,6 +136,7 @@ export default function BasicReact() {
 // [Client Side Rendering]
 // Empty HTML file. But Javascript and CSS files are loaded, THey are responsible
 //  for rendering contents
+
 // [Server side rendering]
 // Having all content with data in a HTML file sent from from the server.
 // Also additional Javascript files are loaded to the browser because
